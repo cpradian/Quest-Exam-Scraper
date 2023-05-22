@@ -27,12 +27,13 @@ class QuestScraper:
     def get_question_id(self, exam_link):
         try:
             self.driver.get(exam_link)
-            time.sleep(20)
+            time.sleep(10)
             question_id = self.driver.find_element("xpath", '/html/body/main/div/div[4]/div/div[2]/div[2]/div[2]/div/table/tbody/tr[3]/td[6]').text
 
             return question_id
         except:
-            return None
+            time.sleep(5)
+            self.get_question_id(exam_link)
     
     def wait_and_get_text(driver, locator):
         try:
@@ -54,17 +55,16 @@ def main():
     options.use_chromium = True
 
     # provide the path to the installed webdriver here:
-    webdriver_path = r"C:\Users\calvi\OneDrive\Documents\OnRamps\Report Download Script\OnRamps-Submission-Report-Automation\msedgedriver.exe"
+    webdriver_path = r"C:\Users\Calvin Pradian\Documents\OnRamps\msedgedriver.exe"
     driver = webdriver.Edge(executable_path=webdriver_path)
 
     # read csv file to get list of quest links
     # provide path to csv file w/ links here:
-    quest_links_path = r"C:\Users\calvi\OneDrive\Documents\OnRamps\Quest-Exam-Scraper\quest_links.csv"
+    quest_links_path = r"C:\Users\Calvin Pradian\Documents\OnRamps\Quest-Exam-Scraper\quest_links.csv"
     dataset = pd.read_csv(quest_links_path)
 
     # Create array of text to search by to grab links of exams
-    exams = ['1A', '1B', '2A', '2B', '3A', '3B', '4A', '4B', '5A', '5B', '6A', '6B', '7A', '7B',
-             'Final A (Part 1)', 'Final A (Part 2)', 'Final B (Part 1)', 'Final B (Part 2)']
+    exams = ['1A', '1B', '2A', '2B', '3A', '3B', '4A', '4B', '5A', '5B', '6A', '6B', '7A', '7B']
 
     # Create new columns based on exams array
     for new_col in exams:
@@ -83,25 +83,25 @@ def main():
     time.sleep(30) 
 
     # Loop through each instructor and url
-    for i in range(2):
+    for i in range(len(instructors)):
         print(instructors[i])
 
         # Go to the target page
         driver.get(urls[i])
 
         # Wait for 3 seconds to fully load
-        time.sleep(20)
+        time.sleep(10)
 
         # Extract links for each of the exams
         exam_links = scraper.gather_exam_links(exams)
-        time.sleep(20)
+        time.sleep(10)
 
         # Loop through each of the exam links and grab the question_id for slide 3 (Q1)
         for exam in exams:
             question_id = scraper.get_question_id(exam_links[exam])
             dataset.at[i, exam] = question_id
             print(question_id)
-            time.sleep(20)
+            time.sleep(10)
 
     # Close the driver
     driver.close()
