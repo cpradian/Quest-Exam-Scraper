@@ -45,12 +45,12 @@ def main():
     options.use_chromium = True
 
     # provide the path to the installed webdriver here:
-    webdriver_path = r"C:\Users\calvi\OneDrive\Documents\OnRamps\Report Download Script\OnRamps-Submission-Report-Automation\msedgedriver.exe"
+    webdriver_path = r"C:\Users\Calvin Pradian\Documents\OnRamps\msedgedriver.exe"
     driver = webdriver.Edge(executable_path=webdriver_path)
 
     # read csv file to get list of quest links
     # provide path to csv file w/ links here:
-    quest_links_path = r"C:\Users\calvi\OneDrive\Documents\OnRamps\Quest-Exam-Scraper\quest_links.csv"
+    quest_links_path = r"C:\Users\Calvin Pradian\Documents\OnRamps\Quest-Exam-Scraper\quest_links.csv"
     dataset = pd.read_csv(quest_links_path)
 
     # Create array of text to search by to grab links of exams
@@ -75,7 +75,7 @@ def main():
     time.sleep(30) 
 
     # Loop through each instructor and url
-    for i in range(4):
+    for i in range(len(instructors)):
         print(instructors[i])
 
         # Go to the target page
@@ -98,7 +98,7 @@ def main():
     # Close the driver
     driver.close()
 
-    dataset.to_csv('new_output.csv', index=False)
+    dataset.to_csv('output.csv', index=False)
 
 
 if __name__ == "__main__":
