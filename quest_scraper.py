@@ -96,8 +96,6 @@ def main():
     # Close the driver
     driver.close()
 
-    # dataset.to_csv('phy1_final_m.csv', index=False)
-
 
 if __name__ == "__main__":
     main()
